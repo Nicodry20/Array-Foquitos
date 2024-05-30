@@ -5,17 +5,19 @@ using UnityEngine;
 public class FoquitoScript : MonoBehaviour
 {
     public GameObject[] colors;
-    public int currentLightIndex =-1;
+    public int currentLightIndex = -1;
+    private int cycleCount = 0;
+    private const int maxCycles = 3;
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void ActivateNextLight()
@@ -24,6 +26,12 @@ public class FoquitoScript : MonoBehaviour
         if (currentLightIndex >= colors.Length)
         {
             currentLightIndex = 0;
+            cycleCount++;
+            if (cycleCount >= maxCycles)
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
         DeactivateAllLights();
         colors[currentLightIndex].SetActive(true);
@@ -35,6 +43,12 @@ public class FoquitoScript : MonoBehaviour
         if (currentLightIndex < 0)
         {
             currentLightIndex = colors.Length - 1;
+            cycleCount++;
+            if (cycleCount >= maxCycles)
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
         DeactivateAllLights();
         colors[currentLightIndex].SetActive(true);
@@ -50,6 +64,6 @@ public class FoquitoScript : MonoBehaviour
 
     public void ActivateRepeating(float t)
     {
-        InvokeRepeating(nameof(ActivateNextLight),0,t);
+        InvokeRepeating(nameof(ActivateNextLight), 0, t);
     }
 }
